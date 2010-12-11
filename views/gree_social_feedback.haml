@@ -1,0 +1,6 @@
+%html{"xmlns:og" => "http://opengraphprotocol.org/schema/", "xmlns:gr" => "http://gree.jp/ns"}
+  %head
+    %meta{:property => "og:title", :content => "#{@entry.title.jleft(100)}"}
+    %meta{:property => "og:url", :content => "#{@url}"}
+    - unless Option.gree_social_feedback_og_type.blank?
+      %meta{:proerpty => "og:type", :content => "#{Option.gree_social_feedback_og_type}"}
