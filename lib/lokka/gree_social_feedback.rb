@@ -28,8 +28,8 @@ module Lokka
       s unless s.blank?
     end
 
-    def gree_social_feedback(url = nil)
-      url = URI.encode("#{env['rack.url_scheme']}://#{env['HTTP_HOST']}#{env['SCRIPT_NAME']}#{env['PATH_INFO']}/gree_social_feedback") if url.blank?
+    def gree_social_feedback
+      url = URI.encode("#{env['rack.url_scheme']}://#{env['HTTP_HOST']}#{env['SCRIPT_NAME']}#{env['PATH_INFO']}/gree_social_feedback")
       type = Option.gree_social_feedback_button
       height = Option.gree_social_feedback_height
       %Q(<iframe src="http://share.gree.jp/share?url=#{url}&type=#{type}&height=#{height}" scrolling="no" frameborder="0" marginwidth="0" marginheight="0" style="border:none; overflow:hidden; width:100px; height:#{height}px;" allowTransparency="true"></iframe>)
