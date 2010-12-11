@@ -1,6 +1,16 @@
 module Lokka
   module GreeSocialFeedback
     def self.registered(app)
+      app.before do
+        path = request.env['PATH_INFO']
+
+        if /^\/([0-9a-zA-Z-]+)$/ =~ path
+          content_for :header do
+            haml :"plugin/lokka-gree_social_feedback/views/header", :layout => false
+          end
+        end
+      end
+
       app.get '/admin/plugins/gree_social_feedback' do
         haml :"plugin/lokka-gree_social_feedback/views/index", :layout => :"admin/layout"
       end 
@@ -12,13 +22,6 @@ module Lokka
         flash[:notice] = t.gree_social_feedback_updated
         redirect '/admin/plugins/gree_social_feedback'
       end 
-
-      app.get %r{^/([0-9a-zA-Z-]+)/gree_social_feedback$} do |id_or_slug|
-        @url = "#{env['rack.url_scheme']}://#{env['HTTP_HOST']}/#{id_or_slug}"
-        @entry = Entry.get_by_fuzzy_slug(id_or_slug)
-        return 404 if @entry.blank?
-        haml :"plugin/lokka-gree_social_feedback/views/gree_social_feedback", :layout => false
-      end
     end
   end
 
@@ -28,8 +31,8 @@ module Lokka
       s unless s.blank?
     end
 
-    def gree_social_feedback
-      url = URI.encode("#{env['rack.url_scheme']}://#{env['HTTP_HOST']}#{env['SCRIPT_NAME']}#{env['PATH_INFO']}/gree_social_feedback")
+    def gree_social_feedback(url = nil)
+      url = URI.encode("#{env['rack.url_scheme']}://#{env['HTTP_HOST']}#{env['SCRIPT_NAME']}#{env['PATH_INFO']}") if url.blank?
       type = Option.gree_social_feedback_button
       height = Option.gree_social_feedback_height
       %Q(<iframe src="http://share.gree.jp/share?url=#{url}&type=#{type}&height=#{height}" scrolling="no" frameborder="0" marginwidth="0" marginheight="0" style="border:none; overflow:hidden; width:100px; height:#{height}px;" allowTransparency="true"></iframe>)
