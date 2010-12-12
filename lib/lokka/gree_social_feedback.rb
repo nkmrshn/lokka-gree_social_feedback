@@ -45,6 +45,8 @@ class String
     return "" if len <= 0
 
     str = self[0,len]
+    return "" if str.length <= 0
+
     if /.\z/ !~ str
       str[-1,1] = ''
     end
