@@ -17,7 +17,7 @@ module Lokka
 
       app.put '/admin/plugins/gree_social_feedback' do
         params.each_pair do |key, value|
-          eval("Option.#{key}='#{value}'")
+          eval("Option.#{key}='#{value}'") if key != '_method'
         end 
         flash[:notice] = t.gree_social_feedback_updated
         redirect '/admin/plugins/gree_social_feedback'
